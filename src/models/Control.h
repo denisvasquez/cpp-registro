@@ -1,5 +1,5 @@
 struct Control {
-  protected:
+  protected: // private
   fstream archivo;
 
   void abrir (string nombre_archivo) {
@@ -12,7 +12,7 @@ struct Control {
   string generar_contra () {
     string contra;
     
-    string abc = "accdefghijklmnopqrstuvwxyz";
+    string abc = "abcdefghijklmnopqrstuvwxyz";
     string Abc = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     string nums = "1234567890";
     string signos = "~$-/[{&#=}]%!";
@@ -26,7 +26,69 @@ struct Control {
     return contra;
   }
 
-  void escribir (Estudiante estudiante, Info informacion) {
+  string find (string texto, string sp, string parecido = "") {
+    size_t pos = 0;
+    string token;
+    while ((pos = texto.find(sp)) != string::npos) {
+      token = texto.substr(0, pos);
+
+      if (parecido == "") {
+        return token;
+      }
+
+      if (token == parecido) {
+        return token;
+      }
+      
+      texto.erase(0, pos + sp.length());
+    }
+
+    return token;
+  }
+
+  string mostrar_informacion (string texto, string sp) {
+    string vector[] = {};
+    size_t pos = 0;
+    int pos_v = 0;
+    string token;
+    while ((pos = texto.find(sp)) != string::npos) {
+      token = texto.substr(0, pos);
+
+      vector[pos_v++] = token;
+      
+      texto.erase(0, pos + sp.length());
+    }
+
+    return vector;
+  }
+
+  void consultar_usuario (string cn, string contra) {
+    string prefijo = cn.substr(0, cn.find("-"));
+    this->abrir("src/sedes/sede_"+prefijo+".csv");
+    string linea;
+
+    while (getline(this->archivo, linea)) {
+      string new_cn = this->find(linea, ",", cn);
+      if (new_cn != cn) continue;
+
+      if (new_cn == cn) {
+        string new_contra = this->find(linea, ",", contra);
+
+        if (new_contra != contra) continue;
+
+        if (new_contra == contra) {
+          // string asdf = this->mostrar_informacion(linea, ",");
+          // cout << asdf[1] << endl;
+        }
+        
+      }
+    }
+
+    this->archivo.close();
+
+  }
+
+  void registrar_usuario (Estudiante estudiante, Info informacion) {
 
     this->abrir("src/sedes/sede_"+informacion.sede+".csv");
     
@@ -36,12 +98,11 @@ struct Control {
     time_t t = time(nullptr);
     tm* now = localtime(&t);
 
-    char buffer[128];
+    string buffer;
     strftime(buffer, sizeof(buffer), "%y", now);
 
     informacion.carnet.append(buffer);
     informacion.carnet.append("-"+to_string(1000+rand() % (9999)));
-    cout << informacion.carnet << endl;
 
     informacion.contra = this->generar_contra();
 
@@ -53,8 +114,8 @@ struct Control {
     this->archivo << estudiante.direccion << ",";
     this->archivo << estudiante.e_mail << ",";
     this->archivo << informacion.carrera << ",";
-    this->archivo << informacion.sede << ",";
     this->archivo << informacion.seccion << ",";
+    this->archivo << "cursos:,";
     for (int i = 0; i<informacion.c_cursos; i++) {
       this->archivo << *(informacion.cursos+i) <<"," ;
     }

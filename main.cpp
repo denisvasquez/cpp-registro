@@ -1,20 +1,21 @@
 #include <iostream>
-#include <string>
 #include <fstream>
 #include <time.h>
+#include <stdlib.h>
+#include <string>
+#include <cstring>
 
 using namespace std;
-
-// global variables
-bool logged = false;
 
 // includes
 #include "src/models/Estudiante.h"
 #include "src/models/Control.h"
+
+Control control;
+
 #include "src/app.h"
 
 int main () {
-
   // starting the app
   app ();
 
