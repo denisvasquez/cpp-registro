@@ -9,7 +9,7 @@ struct Info {
   string *cursos;
 };
 
-//Struct: student's data
+//Struct: student's data mayor
 
 struct Estudiante {
   int edad;
