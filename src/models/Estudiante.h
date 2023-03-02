@@ -1,3 +1,4 @@
+//Struct: academy's data
 struct Info {
   string carnet;
   string contra;
@@ -7,6 +8,8 @@ struct Info {
   int c_cursos;
   string *cursos;
 };
+
+//Struct: student's data
 
 struct Estudiante {
   int edad;

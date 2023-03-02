@@ -9,7 +9,10 @@ struct Control {
   }
 
   public:
+
+  //Function that generate a randow password
   string generar_contra () {
+
     string contra;
     
     string abc = "abcdefghijklmnopqrstuvwxyz";
@@ -22,7 +25,7 @@ struct Control {
       int pos = 1+rand()%(todo_junto.length()-1);
       contra += todo_junto[pos];
     }
-
+    //return the password for the student
     return contra;
   }
 
@@ -62,6 +65,8 @@ struct Control {
     return vector;
   }
 
+
+
   void consultar_usuario (string cn, string contra) {
     string prefijo = cn.substr(0, cn.find("-"));
     this->abrir("src/sedes/sede_"+prefijo+".csv");
@@ -87,18 +92,17 @@ struct Control {
     this->archivo.close();
 
   }
-
+  //Writing the data in the file 
   void registrar_usuario (Estudiante estudiante, Info informacion) {
 
     this->abrir("src/sedes/sede_"+informacion.sede+".csv");
-    
+    //Generating student code 
     srand(time(NULL));
     informacion.carnet.append(informacion.sede+"-");
- 
+
     time_t t = time(nullptr);
     tm* now = localtime(&t);
-
-    string buffer;
+    char buffer[100];
     strftime(buffer, sizeof(buffer), "%y", now);
 
     informacion.carnet.append(buffer);
