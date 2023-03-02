@@ -19,5 +19,6 @@ int main () {
   // starting the app
   app ();
   // this message was written by Davechill I hope you receive my message 
+  // another message just to make sure the git works 
   return 0;
 }
